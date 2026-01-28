@@ -309,7 +309,7 @@ zusammenwachsen-app-highlights/
 - **300+ Themen**, **2.500+ Impulse**
 - **4 Monate** Entwicklung (+ 8 Monate Content)
 - **5.0★** Rating (7 Bewertungen)
-- **~100 Downloads** (erste 4 Wochen)
+- **~300 Downloads**
 
 ---
 
