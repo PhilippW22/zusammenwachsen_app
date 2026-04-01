@@ -36,6 +36,7 @@
 Eine Eltern-App mit über 300 Alltagsthemen, die vollständig offline funktioniert, eine schnelle Suche bietet und bewusst ohne externe Tracking-Dienste auskommt.
 
 **Das Projekt zeigt:**
+
 - Mobile Frontend-Entwicklung mit React Native
 - Umgang mit Performance, Navigation und State
 - Production-ready App mit echten Usern im Store
@@ -49,13 +50,15 @@ ZusammenWachsen ist eine React-Native-App, die Eltern im Alltag unterstützt. Di
 Die App ist **öffentlich in den App Stores verfügbar** und wird aktiv genutzt.
 
 **Meine Rolle:** Mobile Developer (Solo-Projekt)
+
 - ✅ Komplette Frontend-Entwicklung mit React Native
 - ✅ Architektur, State Management und Navigation
 - ✅ Integration von Analytics, Error-Tracking und In-App-Purchases
 - ✅ Store-Deployment für iOS und Android
-- 🤝 Content-Erstellung mit meiner Frau (Pädagogin)
+- 🤝 Content-Konzeption in Zusammenarbeit mit Fachexpertinnen
 
 **Zentrale Funktionen:**
+
 - Fuzzy-Suche über 300+ Themen mit Synonym-Unterstützung
 - Inhalte entdecken über Kategorien & Unterkategorien oder Suche
 - Favoriten mit lokaler Speicherung (AsyncStorage)
@@ -69,26 +72,31 @@ Die App ist **öffentlich in den App Stores verfügbar** und wird aktiv genutzt.
 ## 🛠 Tech Stack
 
 **Frontend:**
+
 - JavaScript (ES6+)
 - React Native (Expo) – Cross-Platform Development
 - React Hooks (useState, useContext, useEffect, Custom Hooks)
 - Komponentenbasierte UI-Struktur
 
 **Navigation & State:**
+
 - React Navigation – Stack, Tab, Drawer + Deep Linking
 - React Context API – Verwaltung kleiner globaler Zustände (z. B. Favoriten, Popups)
 - AsyncStorage – Dauerhaftes Speichern von Favoriten
 
 **Suche & Daten:**
+
 - Fuse.js – Schnelle Offline-Suche über alle Themen (~300)
 - Lokale JSON-Daten – Inhalte der App sind offline verfügbar
 
 **Analytics & Fehlerbehandlung:**
+
 - Eigener HTTPS-Analytics-Endpoint – datenschutzfreundliche Event-Erfassung
 - Supabase (PostgreSQL, EU-Server) für Event-Speicherung
 - Sentry für Error-Tracking in der Produktion
 
 **Wichtige Architektur-Entscheidungen:**
+
 - **Expo:** Schnelle Entwicklung und einfache Builds
 - **Context API statt Redux:** Überschaubarer globaler State, keine unnötige Komplexität
 - **Custom Analytics:** Eigenes Tracking über HTTPS-Endpoint (Backend: Supabase/PostgreSQL, EU-Server). Nur minimale Event-Daten, keine personenbezogenen Informationen
@@ -108,26 +116,27 @@ Die Suche funktioniert vollständig offline und ist auf Nutzerverhalten optimier
 // Gewichtete Felder für die Fuzzy-Suche (Fragen & Synonyme)
 const fuseOptions = {
   keys: [
-    { name: 'SynonymQuestionsIndex', weight: 1.0 },
-    { name: 'QuestionIndex', weight: 0.4 },
-    { name: 'SynonymConceptsIndex', weight: 0.2 }
+    { name: "SynonymQuestionsIndex", weight: 1.0 },
+    { name: "QuestionIndex", weight: 0.4 },
+    { name: "SynonymConceptsIndex", weight: 0.2 },
   ],
   threshold: 0.4,
-  ignoreLocation: true
+  ignoreLocation: true,
 };
 
 // Bereite Such-Text vor: Entferne Füllwörter, behalte Negationen
 const preprocessQuery = (query) => {
   const importantWords = ["nicht", "kein", "keine", "ohne", "nein"];
   let words = query.toLowerCase().split(/\s+/);
-  
+
   return words
-    .filter(w => !stopwords.includes(w) || importantWords.includes(w))
-    .join(' ');
+    .filter((w) => !stopwords.includes(w) || importantWords.includes(w))
+    .join(" ");
 };
 ```
 
 💡 **Was das zeigt:**
+
 - ✓ Suchlogik-Optimierung für bessere UX
 - ✓ Performance-Bewusstsein (Stopwords, aber wichtige Wörter behalten)
 - ✓ Library-Integration (Fuse.js)
@@ -143,9 +152,9 @@ Beim Speichern einer Frage reagiert die UI sofort. Schlägt das Speichern fehl, 
 // contexts/SavedQuestionsContext.jsx
 
 const toggleSaveQuestion = async (questionId) => {
-  const updatedSavedQuestions = { 
-    ...savedQuestions, 
-    [questionId]: !savedQuestions[questionId] 
+  const updatedSavedQuestions = {
+    ...savedQuestions,
+    [questionId]: !savedQuestions[questionId]
   };
 
   // Optimistic Update
@@ -156,7 +165,7 @@ const toggleSaveQuestion = async (questionId) => {
   } catch (storageError) {
     // Rollback bei Fehler
     setSavedQuestions(savedQuestions);
-    
+
     // User-Feedback bei vollem Speicher
     if (storageError.message?.includes('QuotaExceededError')) {
       Alert.alert(
@@ -172,6 +181,7 @@ const toggleSaveQuestion = async (questionId) => {
 ```
 
 💡 **Was das zeigt:**
+
 - ✓ State Management mit React Context
 - ✓ Optimistic UI Pattern für bessere UX
 - ✓ Rollback-Strategie bei Storage-Fehlern
@@ -196,7 +206,9 @@ const FavoriteTabAnimationProvider = ({ children }) => {
   };
 
   return (
-    <FavoriteTabAnimationContext.Provider value={{ highlight, triggerHighlight }}>
+    <FavoriteTabAnimationContext.Provider
+      value={{ highlight, triggerHighlight }}
+    >
       {children}
     </FavoriteTabAnimationContext.Provider>
   );
@@ -204,6 +216,7 @@ const FavoriteTabAnimationProvider = ({ children }) => {
 ```
 
 💡 **Was das zeigt:**
+
 - ✓ UX-Fokus (User lernt durch visuelle Hinweise)
 - ✓ Animation-Integration
 - ✓ Custom Context für Feature-spezifische State
@@ -217,37 +230,41 @@ Fehler werden gefiltert, anonymisiert und dedupliziert, bevor sie an Sentry gese
 
 ```javascript
 // utils/logError.js
- 
-export function logError(error, { tags = {}, extra = {}, severity = 'error' } = {}) {
+
+export function logError(
+  error,
+  { tags = {}, extra = {}, severity = "error" } = {}
+) {
   const anonymizedMessage = anonymizeErrorMessage(error.message);
   const errorKey = `${error.name}-${anonymizedMessage}`;
- 
+
   // Deduplizierung - verhindert Spam
   if (reportedErrors.has(errorKey)) return;
- 
+
   // Nur kritische Fehler senden
   if (!checkIfCritical(error, tags)) return;
- 
+
   reportedErrors.add(errorKey);
- 
+
   // An Sentry senden, aber ohne sensible Daten
   Sentry.captureException(error, {
     tags: sanitizeTags(tags),
     extra: sanitizeExtra(extra),
-    level: severity
+    level: severity,
   });
 }
- 
+
 // Entfernt E-Mails, IDs, Tokens aus Fehlermeldungen
 function anonymizeErrorMessage(message) {
   return message
-    .replace(/user_?\d+/g, 'user_[ID]')
-    .replace(/email=[\w.-]+@[\w.-]+/g, 'email=[HIDDEN]')
-    .replace(/token=[\w.-]+/g, 'token=[HIDDEN]');
+    .replace(/user_?\d+/g, "user_[ID]")
+    .replace(/email=[\w.-]+@[\w.-]+/g, "email=[HIDDEN]")
+    .replace(/token=[\w.-]+/g, "token=[HIDDEN]");
 }
 ```
 
 💡 **Was das zeigt:**
+
 - ✓ Production Best Practices (Datenschutz, kein Spam)
 - ✓ Error Management mit Filterung
 - ✓ Sentry-Integration
@@ -262,6 +279,7 @@ function anonymizeErrorMessage(message) {
 **Problem:** Wenn User eine Frage öffnen, soll die App automatisch zum Beginn der Karte scrollen. Bei vielen Einträgen mit dynamischen Card-Höhen führte `scrollToIndex` zu Crashes und UI-Freezes.
 
 **Lösung:**
+
 - Warte bis die Karte fertig gerendert ist, bevor gescrollt wird (InteractionManager)
 - Halte nur 5 Bildschirme im Speicher (windowSize={5})
 - Lazy Loading (erst 10 Elemente, dann progressiv mehr)
@@ -272,6 +290,7 @@ function anonymizeErrorMessage(message) {
 **Problem:** Keine externen Tracking-Dienste für maximalen Datenschutz.
 
 **Lösung:**
+
 - Eigener HTTPS-Endpoint mit Supabase (PostgreSQL, EU-Server) als Backend
 - Strenge Event-Validierung (nur erlaubte Types, keine personenbezogenen Daten)
 
@@ -280,6 +299,7 @@ function anonymizeErrorMessage(message) {
 **Problem:** Drawer + Tab + Stack + Deep Links führten zu Navigationsfehlern.
 
 **Lösung:**
+
 - "Safe Stack"-Wrapper mit Error Boundaries
 - Fallback-UI bei Rendering-Fehlern
 - Navigation-Guards für Parameter-Validierung bei Deep Links
@@ -305,17 +325,16 @@ zusammenwachsen-app-highlights/
 ## 📊 Projektzahlen
 
 - **~10 Screens**, **~30 Komponenten**
-- **~8.000 – 10.000 Zeilen eigener Frontend-Code**
 - **300+ Themen**, **2.500+ Impulse**
-- **4 Monate** Entwicklung (+ 8 Monate Content)
 - **5.0★** Rating (7 Bewertungen)
-- **~300 Downloads**
+- **Aktiver Live-Betrieb mit echten Nutzer:innen**
 
 ---
 
 ## 🎓 Learnings
 
 **Technisch:**
+
 - React Native & Expo in einem echten Produkt
 - State Management mit Context API
 - Navigation (Stack, Tab, Drawer, Deep Linking)
@@ -326,6 +345,7 @@ zusammenwachsen-app-highlights/
 - App Store Deployment (iOS + Android)
 
 **Projekt-Management:**
+
 - End-to-End Ownership (Idee → Entwicklung → Launch)
 - Iteratives Design basierend auf User-Feedback
 - Strukturierung größerer Content-Mengen
@@ -335,6 +355,7 @@ zusammenwachsen-app-highlights/
 ## 📱 App testen
 
 Die App ist live in den Stores verfügbar:
+
 - https://www.zusammenwachsenapp.de/app
 
 Dieses Repository enthält ausgewählte Code-Highlights.
